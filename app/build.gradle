@@ -1,0 +1,61 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+ext {
+    android_components_version = '0.28.0'
+    geckoview_channel = "nightly"
+    geckoview_version = "64.0.20180927100037"
+}
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "org.mozilla.simple.browser"
+        minSdkVersion 24
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "abi"
+
+    productFlavors {
+        x86 { dimension "abi" }
+        x86_64 { dimension "abi" }
+        arm { dimension "abi" }
+        aarch64 { dimension "abi" }
+    }
+}
+
+dependencies {
+    def material_version = "1.1.0-alpha07"
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //google material design
+    implementation "com.google.android.material:material:$material_version"
+
+    implementation "org.mozilla.components:browser-toolbar:$android_components_version"
+    implementation "org.mozilla.components:concept-engine:$android_components_version"
+    implementation "org.mozilla.components:browser-engine-gecko:$android_components_version"
+    x86Implementation "org.mozilla.geckoview:geckoview-${geckoview_channel}-x86:${geckoview_version}"
+    x86_64Implementation  "org.mozilla.geckoview:geckoview-${geckoview_channel}-x86_64:${geckoview_version}"
+    armImplementation     "org.mozilla.geckoview:geckoview-${geckoview_channel}-armeabi-v7a:${geckoview_version}"
+    aarch64Implementation "org.mozilla.geckoview:geckoview-${geckoview_channel}-arm64-v8a:${geckoview_version}"
+    implementation "org.mozilla.components:feature-toolbar:$android_components_version"
+    implementation "org.mozilla.components:feature-session:$android_components_version"
+    implementation "org.mozilla.components:browser-menu:$android_components_version"
+    implementation "org.mozilla.components:ui-icons:$android_components_version"
+    implementation "org.mozilla.components:ui-colors:$android_components_version"
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
